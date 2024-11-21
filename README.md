@@ -10,3 +10,7 @@ pip install uvicorn[standard]
 verify by runing " uvicorn --version "
  
 
+uvicorn main:app --reload
+
+
+pip install pyjwt

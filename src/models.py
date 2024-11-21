@@ -5,9 +5,9 @@ from sqlalchemy.orm import sessionmaker
 # Base class for ORM models
 Base = declarative_base()
 
-# Define your Item model
-class Item(Base):
-    __tablename__ = "items"  # Ensure this is defined
+# Define your User model
+class User(Base):
+    __tablename__ = "users"  # Ensure this is defined
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, index=True)
     description = Column(String, nullable=True)

@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
-from models import Base, Item, SessionLocal, engine
+from models import Base, User, SessionLocal, engine
 
 
 app = FastAPI()
@@ -14,40 +14,40 @@ def get_db():
     finally:
         db.close()
 
-# create item
-@app.post('/items/')
-def create_item(name: str, description: str = None, db: Session = Depends(get_db)):
-    new_item = Item(name=name, description=description)
-    db.add(new_item)
+# create User
+@app.post('/users/')
+def create_user(name: str, description: str = None, db: Session = Depends(get_db)):
+    new_user = User(name=name, description=description)
+    db.add(new_user)
     db.commit()
-    db.refresh(new_item)
-    return new_item
+    db.refresh(new_user)
+    return new_user
 
 
-# get items
-@app.get("/items/")
-def read_items(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
-    return db.query(Item).offset(skip).limit(limit).all()
+# get users
+@app.get("/users/")
+def read_users(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
+    return db.query(User).offset(skip).limit(limit).all()
 
 
-# update item
-@app.put("/items/{item_id}")
-def update_item(item_id: int, name: str, description: str, db: Session = Depends(get_db)):
-    item = db.query(Item).filter(Item.id == item_id).first()
-    if not item:
-        raise HTTPException(status_code=404, detail="Item not found")
-    item.name = name
-    item.description = description
+# update user
+@app.put("/users/{user_id}")
+def update_user(user_id: int, name: str, description: str, db: Session = Depends(get_db)):
+    user = db.query(User).filter(user.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    user.name = name
+    user.description = description
     db.commit()
-    db.refresh(item)
-    return item
+    db.refresh(user)
+    return user
 
-#delete an item
-@app.delete("/items/{item_id}")
-def delete_item(item_id: int, db: Session = Depends(get_db)):
-    item = db.query(Item).filter(Item.id == item_id).first()
-    if not item:
-        raise HTTPException(status_code=404, detail="Item not found")
-    db.delete(item)
+#delete a user
+@app.delete("/users/{user_id}")
+def delete_user(user_id: int, db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    db.delete(user)
     db.commit()
-    return {"detail": "Item deleted"}
+    return {"detail": "User deleted"}
